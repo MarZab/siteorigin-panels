@@ -133,6 +133,15 @@ class SiteOrigin_Panels_Default_Styling {
 			'priority' => 6,
 		);
 
+		$fields['background_image_attachment_size'] = array(
+			'name' => __('Background Image Size', 'siteorigin-panels'),
+			'type' => 'select',
+			'group' => 'design',
+			'options' => array_merge(array('full'),get_intermediate_image_sizes()),
+			'description' => __('Size of the background image of the widget.', 'siteorigin-panels'),
+			'priority' => 6,
+		);
+
 		$fields['background_display'] = array(
 			'name' => __('Background Image Display', 'siteorigin-panels'),
 			'type' => 'select',
@@ -141,6 +150,7 @@ class SiteOrigin_Panels_Default_Styling {
 				'tile' => __('Tiled Image', 'siteorigin-panels'),
 				'cover' => __('Cover', 'siteorigin-panels'),
 				'center' => __('Centered, with original size', 'siteorigin-panels'),
+				'contain' => __('Contain, scaled to fit inside', 'siteorigin-panels'),
 			),
 			'description' => __('How the background image is displayed.', 'siteorigin-panels'),
 			'priority' => 7,
@@ -200,6 +210,15 @@ class SiteOrigin_Panels_Default_Styling {
 			'priority' => 6,
 		);
 
+		$fields['background_image_attachment_size'] = array(
+			'name' => __('Background Image Size', 'siteorigin-panels'),
+			'type' => 'select',
+			'group' => 'design',
+			'options' => array_merge(array('full'),get_intermediate_image_sizes()),
+			'description' => __('Size of the background image of the widget.', 'siteorigin-panels'),
+			'priority' => 6,
+		);
+
 		$fields['background_display'] = array(
 			'name' => __('Background Image Display', 'siteorigin-panels'),
 			'type' => 'select',
@@ -208,6 +227,7 @@ class SiteOrigin_Panels_Default_Styling {
 				'tile' => __('Tiled Image', 'siteorigin-panels'),
 				'cover' => __('Cover', 'siteorigin-panels'),
 				'center' => __('Centered, with original size', 'siteorigin-panels'),
+				'contain' => __('Contain, scaled to fit inside', 'siteorigin-panels'),
 			),
 			'description' => __('How the background image is displayed.', 'siteorigin-panels'),
 			'priority' => 7,
@@ -262,7 +282,11 @@ class SiteOrigin_Panels_Default_Styling {
 		}
 
 		if( !empty( $args['background_image_attachment'] ) ) {
-			$url = wp_get_attachment_image_src( $args['background_image_attachment'], 'full' );
+			if( !empty( $args['background_image_attachment_size'] ) ) {
+				$url = wp_get_attachment_image_src($args['background_image_attachment'], $args['background_image_attachment_size']);
+			} else {
+				$url = wp_get_attachment_image_src($args['background_image_attachment'], 'large');
+			}
 
 			if( !empty($url) ) {
 				$attributes['style'] .= 'background-image: url(' . $url[0] . ');';
@@ -277,6 +301,9 @@ class SiteOrigin_Panels_Default_Styling {
 					break;
 				case 'center':
 					$attributes['style'] .= 'background-position: center center; background-repeat: no-repeat;';
+					break;
+				case 'contain':
+					$attributes['style'] .= 'background-position: contain; background-repeat: no-repeat;';
 					break;
 			}
 		}
@@ -322,7 +349,11 @@ class SiteOrigin_Panels_Default_Styling {
 		}
 
 		if( !empty( $args['background_image_attachment'] ) ) {
-			$url = wp_get_attachment_image_src( $args['background_image_attachment'], 'full' );
+			if( !empty( $args['background_image_attachment_size'] ) ) {
+				$url = wp_get_attachment_image_src($args['background_image_attachment'], $args['background_image_attachment_size']);
+			} else {
+				$url = wp_get_attachment_image_src($args['background_image_attachment'], 'large');
+			}
 
 			if( !empty($url) ) {
 				$attributes['style'] .= 'background-image: url(' . $url[0] . ');';
@@ -337,6 +368,9 @@ class SiteOrigin_Panels_Default_Styling {
 					break;
 				case 'center':
 					$attributes['style'] .= 'background-position: center center; background-repeat: no-repeat;';
+					break;
+				case 'contain':
+					$attributes['style'] .= 'background-position: contain; background-repeat: no-repeat;';
 					break;
 			}
 		}
